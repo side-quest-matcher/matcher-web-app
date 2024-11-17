@@ -6,8 +6,10 @@ export default function UploadForm() {
   return (
     <form action={uploadFile} className="flex flex-col gap-4">
       <label>
-        <span>Upload a file </span>
-        <input type="file" name="file" accept=".zip" />
+        <span>JSON File</span>
+        <input type="file" name="file" accept=".json" />
+        <span>.csv File </span>
+        <input type="file" name="file" accept=".csv" />
       </label>
       <Button className="w-fit" type="submit">
         Submit
