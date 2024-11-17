@@ -28,9 +28,13 @@ export async function POST(request: NextRequest) {
     const watchHistoryFile = formData.get('watch-history-file') as File;
     const subscriptionsFile = formData.get('subscriptions-file') as File;
 
-    if (!watchHistoryFile || !subscriptionsFile) {
+    // Verify both files exist and have correct names
+    if (!watchHistoryFile || watchHistoryFile.name !== 'watch-history.json' || 
+        !subscriptionsFile || subscriptionsFile.name !== 'subscriptions.csv') {
       return NextResponse.json(
-        { error: 'Both files are required' },
+        { 
+          error: 'Files must be named exactly "watch-history.json" and "subscriptions.csv"' 
+        },
         { 
           status: 400,
           headers: {
@@ -48,8 +52,9 @@ export async function POST(request: NextRequest) {
     const uploadDir = join(uploadsDir, uploadId);
     await mkdir(uploadDir, { recursive: true });
 
-    const watchHistoryPath = join(uploadDir, `watch-history-${timestamp}.json`);
-    const subscriptionsPath = join(uploadDir, `subscriptions-${timestamp}.csv`);
+    // Keep original filenames as required
+    const watchHistoryPath = join(uploadDir, 'watch-history.json');
+    const subscriptionsPath = join(uploadDir, 'subscriptions.csv');
 
     // Convert files to array buffers
     const watchHistoryBuffer = await watchHistoryFile.arrayBuffer();

@@ -7,17 +7,17 @@ export async function uploadFile(formData: FormData) {
     const watchHistoryFile = formData.get('watch-history-file') as File
     const subscriptionsFile = formData.get('subscriptions-file') as File
 
-    if (!watchHistoryFile || !subscriptionsFile) {
+    if (!watchHistoryFile || watchHistoryFile.name !== 'watch-history.json' || 
+        !subscriptionsFile || subscriptionsFile.name !== 'subscriptions.csv') {
       return {
         success: false,
-        error: 'Both files are required'
+        error: 'Both files are required and must be named correctly'
       }
     }
 
     // Create unique filenames
-    const timestamp = Date.now()
-    const watchHistoryPath = join(process.cwd(), 'uploads', `watch-history-${timestamp}.json`)
-    const subscriptionsPath = join(process.cwd(), 'uploads', `subscriptions-${timestamp}.csv`)
+    const watchHistoryPath = join(process.cwd(), 'uploads', `watch-history.json`)
+    const subscriptionsPath = join(process.cwd(), 'uploads', `subscriptions.csv`)
 
     // Convert files to array buffers
     const watchHistoryBuffer = await watchHistoryFile.arrayBuffer()

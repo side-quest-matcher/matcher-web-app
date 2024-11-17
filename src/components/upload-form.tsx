@@ -100,14 +100,11 @@ export default function UploadForm() {
       </form>
 
       {result && (
-        <div className="mt-6 p-4 border rounded-lg bg-gray-50">
+        <div className="mt-6 p-4 border rounded-lg">
           <h3 className="text-lg font-semibold mb-2">Upload Successful!</h3>
           <div className="space-y-2">
             <p>Your upload ID: <span className="font-mono">{result.uploadId}</span></p>
             <p>Save this ID to check your results later.</p>
-            <p className="text-sm text-gray-600">
-              Your files are being processed. Check back soon using your upload ID to see the results.
-            </p>
           </div>
         </div>
       )}
