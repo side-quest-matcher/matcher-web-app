@@ -1,6 +1,6 @@
 "use client";
 import { uploadFile } from "@/app/upload-action";
-import { Button } from "@radix-ui/themes";
+import { Button, Text } from "@radix-ui/themes";
 
 export default function UploadForm() {
   return (
@@ -10,6 +10,8 @@ export default function UploadForm() {
         <input type="file" name="file" accept=".json" />
         <span>.csv File </span>
         <input type="file" name="file" accept=".csv" />
+        <Text as="span">Upload a file </Text>
+        <input type="file" name="file" accept=".zip" />
       </label>
       <Button className="w-fit" type="submit">
         Submit
