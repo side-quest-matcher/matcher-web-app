@@ -4,10 +4,10 @@ import { Heading } from "@radix-ui/themes";
 export default function Home() {
   return (
     <>
-      <header className="min-h-16">
-        <Heading as="h1">Matcher</Heading>
-      </header>
-      <main>
+      <main className="flow mt-8">
+        <Heading size="7" as="h1">
+          Matcher
+        </Heading>
         <UploadForm />
       </main>
     </>
