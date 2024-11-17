@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { Button, Text } from "@radix-ui/themes";
-import { useRouter } from "next/navigation";
 
 interface UploadResult {
   success: boolean;
@@ -19,6 +18,20 @@ export default function UploadForm() {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
+
+    // Check file names
+    const watchHistoryFile = formData.get('watch-history-file') as File;
+    const subscriptionsFile = formData.get('subscriptions-file') as File;
+
+    if (watchHistoryFile.name !== 'watch-history.json') {
+      alert('The watch history file must be named "watch-history.json".');
+      return;
+    }
+
+    if (subscriptionsFile.name !== 'subscriptions.csv') {
+      alert('The subscriptions file must be named "subscriptions.csv".');
+      return;
+    }
 
     try {
       setIsLoading(true);
