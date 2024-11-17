@@ -1,0 +1,38 @@
+{
+    "test-user-1": {
+        "matches": {
+            "match-key-1a": {
+                "recommendedVideo": "https://www.youtube.com/watch?v=a0ANLUYyRYI&ab_channel=Stanford"
+            },
+            "match-key-1b": {
+                "recommendedVideo": "https://www.youtube.com/watch?v=a0ANLUYyRYI&ab_channel=Stanford"
+            },
+            "match-key-1c": {
+                "recommendedVideo": "https://www.youtube.com/watch?v=a0ANLUYyRYI&ab_channel=Stanford"
+            }
+        }
+    },
+    "test-user-2": {
+        "matches": {
+            "match-key-2a": {
+                "recommendedVideo": "https://www.youtube.com/watch?v=b5Ho2_Si6hY&ab_channel=GitHub"
+            },
+            "match-key-2b": {
+                "recommendedVideo": "https://www.youtube.com/watch?v=b5Ho2_Si6hY&ab_channel=GitHub"
+            },
+            "match-key-2c": {
+                "recommendedVideo": "https://www.youtube.com/watch?v=a0ANLUYyRYI&ab_channel=Stanford"
+            }
+        }
+    },
+    "test-user-3": {
+        "matches": {
+            "match-key-3a": {
+                "recommendedVideo": "https://www.youtube.com/watch?v=b5Ho2_Si6hY&ab_channel=GitHub"
+            },
+            "match-key-3b": {
+                "recommendedVideo": "https://www.youtube.com/watch?v=a0ANLUYyRYI&ab_channel=Stanford"
+            }
+        }
+    }
+}
