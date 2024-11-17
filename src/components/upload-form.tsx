@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { uploadFile } from "@/app/upload-action";
 import { Button, Text } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
 
@@ -9,26 +8,36 @@ export default function UploadForm() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  async function handleSubmit(formData: FormData) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
     try {
       setIsLoading(true);
       setError(null);
       
-      const response = await uploadFile(formData);
-      if (response.success) {
-        router.push('/results'); // Redirect to results page after successful upload
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        router.push('/results');
       } else {
-        setError(response.error);
+        setError(data.error || 'Failed to upload files');
       }
     } catch (err) {
-      setError('Failed to upload files. Please try again.');
+      setError(`Failed to upload files. Please try again. Error: ${err}`);
     } finally {
       setIsLoading(false);
     }
   }
 
   return (
-    <form action={handleSubmit} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div className="space-y-4">
         <div>
           <Text as="label" size="2" weight="bold">
