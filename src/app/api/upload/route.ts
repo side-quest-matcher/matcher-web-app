@@ -1,9 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile } from 'fs/promises';
+import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
+import { existsSync } from 'fs';
+import crypto from 'crypto';
 
 export async function POST(request: NextRequest) {
+  // Handle CORS
+  if (request.method === 'OPTIONS') {
+    return new NextResponse(null, {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
+    });
+  }
+
   try {
+    // Ensure uploads directory exists
+    const uploadsDir = join(process.cwd(), 'uploads');
+    if (!existsSync(uploadsDir)) {
+      await mkdir(uploadsDir, { recursive: true });
+    }
+
     const formData = await request.formData();
     const watchHistoryFile = formData.get('watch-history-file') as File;
     const subscriptionsFile = formData.get('subscriptions-file') as File;
@@ -11,14 +31,25 @@ export async function POST(request: NextRequest) {
     if (!watchHistoryFile || !subscriptionsFile) {
       return NextResponse.json(
         { error: 'Both files are required' },
-        { status: 400 }
+        { 
+          status: 400,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+          },
+        }
       );
     }
 
-    // Create unique filenames
+    // Generate a unique upload ID
+    const uploadId = crypto.randomBytes(8).toString('hex');
     const timestamp = Date.now();
-    const watchHistoryPath = join(process.cwd(), 'uploads', `watch-history-${timestamp}.json`);
-    const subscriptionsPath = join(process.cwd(), 'uploads', `subscriptions-${timestamp}.csv`);
+    
+    // Create upload directory for this specific upload
+    const uploadDir = join(uploadsDir, uploadId);
+    await mkdir(uploadDir, { recursive: true });
+
+    const watchHistoryPath = join(uploadDir, `watch-history-${timestamp}.json`);
+    const subscriptionsPath = join(uploadDir, `subscriptions-${timestamp}.csv`);
 
     // Convert files to array buffers
     const watchHistoryBuffer = await watchHistoryFile.arrayBuffer();
@@ -28,22 +59,50 @@ export async function POST(request: NextRequest) {
     await writeFile(watchHistoryPath, Buffer.from(watchHistoryBuffer));
     await writeFile(subscriptionsPath, Buffer.from(subscriptionsBuffer));
 
-    return NextResponse.json({
-      success: true,
-      watchHistoryPath,
-      subscriptionsPath
-    });
+    // Create a metadata file for this upload
+    const metadata = {
+      uploadId,
+      timestamp,
+      watchHistoryFile: watchHistoryFile.name,
+      subscriptionsFile: subscriptionsFile.name,
+      status: 'processing'
+    };
+
+    await writeFile(
+      join(uploadDir, 'metadata.json'),
+      JSON.stringify(metadata, null, 2)
+    );
+
+    return NextResponse.json(
+      {
+        success: true,
+        uploadId,
+        watchHistoryPath,
+        subscriptionsPath,
+        message: 'Files uploaded successfully. Use your upload ID to check results.'
+      },
+      {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
+    );
   } catch (error) {
     console.error('Upload error:', error);
     return NextResponse.json(
-      { error: 'Failed to upload files' },
-      { status: 500 }
+      { error: error instanceof Error ? error.message : 'Failed to upload files' },
+      { 
+        status: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
     );
   }
 }
 
 export const config = {
   api: {
-    bodyParser: false, // Disable body parsing, we'll handle raw form data
+    bodyParser: false,
   },
 }; 
