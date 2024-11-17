@@ -22,20 +22,20 @@ const matches : UserMatches = {
             "match-key-1a": {
                 "recommendedVideo": "https://www.youtube.com/watch?v=a0ANLUYyRYI&ab_channel=Stanford"
             },
-            "match-key-1b": {
+            "test-user-3": {
                 "recommendedVideo": "https://www.youtube.com/watch?v=a0ANLUYyRYI&ab_channel=Stanford"
             },
-            "match-key-1c": {
+            "test-user-2": {
                 "recommendedVideo": "https://www.youtube.com/watch?v=a0ANLUYyRYI&ab_channel=Stanford"
             }
         }
     },
     "test-user-2": {
         "matches": {
-            "match-key-2a": {
+            "test-user-1": {
                 "recommendedVideo": "https://www.youtube.com/watch?v=b5Ho2_Si6hY&ab_channel=GitHub"
             },
-            "match-key-2b": {
+            "test-user-3": {
                 "recommendedVideo": "https://www.youtube.com/watch?v=b5Ho2_Si6hY&ab_channel=GitHub"
             },
             "match-key-2c": {
@@ -48,7 +48,7 @@ const matches : UserMatches = {
             "match-key-3a": {
                 "recommendedVideo": "https://www.youtube.com/watch?v=b5Ho2_Si6hY&ab_channel=GitHub"
             },
-            "match-key-3b": {
+            "test-user-2": {
                 "recommendedVideo": "https://www.youtube.com/watch?v=a0ANLUYyRYI&ab_channel=Stanford"
             }
         }
@@ -58,7 +58,7 @@ const matches : UserMatches = {
 const Results = (props: Props) => {
     //   const [matches, setMatches] = useState<UserMatches>({});
 
-    const [userToken, setUserToken] = useState<string>("NOT_SET") // has to be a string bcuz typescript
+    const [userToken, setUserToken] = useState<string>("") // has to be a string bcuz typescript
 
     const getIdFromURL = (url: string) => {
         try {
@@ -95,6 +95,31 @@ const Results = (props: Props) => {
     //     fetchMatches();
     //   }, []);
 
+    const [tokens, setTokens] = useState<string[]>([])
+
+    useEffect(() => {
+        const fetchTokens = async () => {
+            const response = await fetch('/api/tokens');
+            if (response.ok) {
+                const data = await response.json();
+                setTokens(data);
+            } else {
+                console.error('Failed to fetch tokens');
+            }
+        };
+
+        fetchTokens();
+    }, []);
+
+    const getUserIfRevealed = (matchKey: string) => {
+        console.log(`${tokens} \n ${matchKey}`)
+        if(tokens.includes(matchKey)) {
+            return (<span className='text-green-500 font-bold'>DE-ANON</span>);
+        } else {
+            return matchKey
+        }
+    }
+
   return (
     <div>
 
@@ -126,7 +151,9 @@ const Results = (props: Props) => {
                         <a href={match.recommendedVideo} target="_blank" rel="noopener noreferrer">
                             {match.recommendedVideo}
                         </a>
-                        <h4>You've matched with {matchKey}!</h4>
+                        <h4>You've matched with {" "}
+                            {getUserIfRevealed(matchKey)}
+                        !</h4>
                     </div>
                 </div>
             ))}

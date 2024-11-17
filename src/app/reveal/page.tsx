@@ -1,15 +1,30 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 type Props = {}
 
 
 const Reveal = (props: Props) => {
 
-    const [inputState, setInputState] = useState("")
+    const [tokenState, setTokenState] = useState("")
+    const [submitted, setSubmitted] = useState(false)
 
-    const handleSubmit = () => {
-        
+    const handleSubmit = async () => {
+        const response = await fetch('/api/reveal', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token: tokenState }),
+        })
+
+        if (response.ok) {
+            console.log('Token appended successfully')
+        } else {
+            console.error('Failed to append token')
+        }
+
+        setSubmitted(true)
     }
 
     return (
@@ -21,14 +36,22 @@ const Reveal = (props: Props) => {
             <input 
                 type="text" 
                 className='mt-4 p-2 border-gray-400 border-2 rounded-lg w-full'
-                value={inputState} 
-                onChange={(e) => setInputState(e.target.value)} 
+                value={tokenState} 
+                onChange={(e) => setTokenState(e.target.value)} 
                 placeholder="Enter your user token"
             />
 
-            <button onClick={handleSubmit} className='mt-4 p-4 border-white border-2 rounded-lg cursor-pointer hover:bg-white hover:text-black transition-all'>
-                De-anonymize!
-            </button>
+            {!submitted ? 
+                (
+                    <button onClick={handleSubmit} className='mt-4 p-4 border-white border-2 rounded-lg cursor-pointer hover:bg-white hover:text-black transition-all'>
+                        De-anonymize!
+                    </button>
+                ) 
+                : 
+                (
+                    <p className='text-green-400 p-4'>Success!</p>
+                )
+            }
         </div>
     )
 }
