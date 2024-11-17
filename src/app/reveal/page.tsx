@@ -27,11 +27,15 @@ const Reveal = (props: Props) => {
         setSubmitted(true)
     }
 
-    return (
-        <div className='flex items-center justify-center h-screen flex-col'>
-
-            <h1 className='text-3xl font-bold mt-2'>Looking to Reveal Your Identity?</h1>
-            <p className='mt-2'>Enter your token here & de-anonymize yourself to people that match with you! </p>
+  return (
+    <div className="flex items-center justify-center h-screen flex-col">
+      <h1 className="text-3xl font-bold mt-2">
+        Looking to Reveal Your Identity?
+      </h1>
+      <p className="mt-2">
+        Enter your token here & de-anonymize yourself to people that match with
+        you!{" "}
+      </p>
 
             <input 
                 type="text" 
@@ -56,4 +60,4 @@ const Reveal = (props: Props) => {
     )
 }
 
-export default Reveal
+export default Reveal;

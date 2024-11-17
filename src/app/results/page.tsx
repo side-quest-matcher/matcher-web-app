@@ -1,18 +1,18 @@
-"use client"
-import React, { useEffect, useState } from 'react'
+"use client";
+import React, { useState } from "react";
 
-type Props = {}
+// type Props = {}
 
 type Match = {
-    recommendedVideo: string;
+  recommendedVideo: string;
 };
 
 type UserMatches = {
-    [userId: string]: {
-        matches: {
-            [matchKey: string]: Match;
-        };
+  [userId: string]: {
+    matches: {
+      [matchKey: string]: Match;
     };
+  };
 };
 
 // Temporary store for matches
@@ -55,45 +55,48 @@ const matches : UserMatches = {
     }
 }
 
-const Results = (props: Props) => {
-    //   const [matches, setMatches] = useState<UserMatches>({});
+const Results = () => {
+  //   const [matches, setMatches] = useState<UserMatches>({});
 
     const [userToken, setUserToken] = useState<string>("") // has to be a string bcuz typescript
 
-    const getIdFromURL = (url: string) => {
-        try {
-            // Parse the URL
-            const urlObj = new URL(url);
-        
-            // Check if the URL is from YouTube
-            if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
-              return urlObj.searchParams.get('v'); // Extract the 'v' parameter
-            }
-        
-            // For shortened YouTube URLs (e.g., youtu.be)
-            if (urlObj.hostname === 'youtu.be') {
-              return urlObj.pathname.slice(1); // The video ID is in the pathname
-            }
-        
-            // Invalid YouTube URL
-            return null;
-          } catch (error) {
-            // Handle invalid URLs or other errors
-            console.error('Invalid URL:', error);
-            return null;
-          }
+  const getIdFromURL = (url: string) => {
+    try {
+      // Parse the URL
+      const urlObj = new URL(url);
+
+      // Check if the URL is from YouTube
+      if (
+        urlObj.hostname === "www.youtube.com" ||
+        urlObj.hostname === "youtube.com"
+      ) {
+        return urlObj.searchParams.get("v"); // Extract the 'v' parameter
+      }
+
+      // For shortened YouTube URLs (e.g., youtu.be)
+      if (urlObj.hostname === "youtu.be") {
+        return urlObj.pathname.slice(1); // The video ID is in the pathname
+      }
+
+      // Invalid YouTube URL
+      return null;
+    } catch (error) {
+      // Handle invalid URLs or other errors
+      console.error("Invalid URL:", error);
+      return null;
     }
+  };
 
-    //   useEffect(() => {
-    //     const fetchMatches = async () => {
-    //       const response = await fetch('../../matches.json'); // Update the path as necessary
-    //       const data = await response.json();
-    //       setMatches(data);
-    //       console.log(matches)
-    //     };
+  //   useEffect(() => {
+  //     const fetchMatches = async () => {
+  //       const response = await fetch('../../matches.json'); // Update the path as necessary
+  //       const data = await response.json();
+  //       setMatches(data);
+  //       console.log(matches)
+  //     };
 
-    //     fetchMatches();
-    //   }, []);
+  //     fetchMatches();
+  //   }, []);
 
     const [tokens, setTokens] = useState<string[]>([])
 
@@ -122,16 +125,15 @@ const Results = (props: Props) => {
 
   return (
     <div>
+      <h1 className="text-3xl bold">Your Matches</h1>
 
-        <h1 className='text-3xl bold'>Your Matches</h1>
-
-        <input 
-            type="text" 
-            className='border-2 p-2 mb-4'
-            value={userToken || ''} 
-            onChange={(e) => setUserToken(e.target.value)} 
-            placeholder="Enter your user token" 
-        />
+      <input
+        type="text"
+        className="border-2 p-2 mb-4"
+        value={userToken || ""}
+        onChange={(e) => setUserToken(e.target.value)}
+        placeholder="Enter your user token"
+      />
 
     {(userToken in matches) ? (
         <div className='flex flex-col gap-4'>
@@ -156,13 +158,15 @@ const Results = (props: Props) => {
                         !</h4>
                     </div>
                 </div>
-            ))}
+              </div>
+            )
+          )}
         </div>
-    ) : (
+      ) : (
         <p>Please enter a valid user token.</p>
-    )}
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default Results
+export default Results;
