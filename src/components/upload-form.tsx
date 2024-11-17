@@ -54,15 +54,6 @@ export default function UploadForm() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-blue-50 p-4 rounded-lg mb-4">
-        <Text size="2" weight="bold">Important:</Text>
-        <Text size="2">Files must be named exactly:</Text>
-        <ul className="list-disc ml-6 mt-2">
-          <li>watch-history.json</li>
-          <li>subscriptions.csv</li>
-        </ul>
-      </div>
-
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="space-y-4">
           <div>
