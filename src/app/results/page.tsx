@@ -56,47 +56,47 @@ const matches : UserMatches = {
 }
 
 const Results = () => {
-  //   const [matches, setMatches] = useState<UserMatches>({});
+    // const [matches, setMatches] = useState<UserMatches>({});
 
     const [userToken, setUserToken] = useState<string>("") // has to be a string bcuz typescript
 
-  const getIdFromURL = (url: string) => {
-    try {
-      // Parse the URL
-      const urlObj = new URL(url);
+    const getIdFromURL = (url: string) => {
+        try {
+        // Parse the URL
+        const urlObj = new URL(url);
 
-      // Check if the URL is from YouTube
-      if (
-        urlObj.hostname === "www.youtube.com" ||
-        urlObj.hostname === "youtube.com"
-      ) {
-        return urlObj.searchParams.get("v"); // Extract the 'v' parameter
-      }
+        // Check if the URL is from YouTube
+        if (
+            urlObj.hostname === "www.youtube.com" ||
+            urlObj.hostname === "youtube.com"
+        ) {
+            return urlObj.searchParams.get("v"); // Extract the 'v' parameter
+        }
 
-      // For shortened YouTube URLs (e.g., youtu.be)
-      if (urlObj.hostname === "youtu.be") {
-        return urlObj.pathname.slice(1); // The video ID is in the pathname
-      }
+        // For shortened YouTube URLs (e.g., youtu.be)
+        if (urlObj.hostname === "youtu.be") {
+            return urlObj.pathname.slice(1); // The video ID is in the pathname
+        }
 
-      // Invalid YouTube URL
-      return null;
-    } catch (error) {
-      // Handle invalid URLs or other errors
-      console.error("Invalid URL:", error);
-      return null;
-    }
-  };
+        // Invalid YouTube URL
+        return null;
+        } catch (error) {
+        // Handle invalid URLs or other errors
+        console.error("Invalid URL:", error);
+        return null;
+        }
+    };
 
-  //   useEffect(() => {
-  //     const fetchMatches = async () => {
-  //       const response = await fetch('../../matches.json'); // Update the path as necessary
-  //       const data = await response.json();
-  //       setMatches(data);
-  //       console.log(matches)
-  //     };
+    //   useEffect(() => {
+    //     const fetchMatches = async () => {
+    //       const response = await fetch('../../matches.json'); // Update the path as necessary
+    //       const data = await response.json();
+    //       setMatches(data);
+    //       console.log(matches)
+    //     };
 
-  //     fetchMatches();
-  //   }, []);
+    //     fetchMatches();
+    //   }, []);
 
     const [tokens, setTokens] = useState<string[]>([])
 
@@ -115,21 +115,25 @@ const Results = () => {
     }, []);
 
     const getUserIfRevealed = (matchKey: string) => {
+
+        const tokens_only = tokens.map(t => t.split("--")[0])
+
         console.log(`${tokens} \n ${matchKey}`)
-        if(tokens.includes(matchKey)) {
-            return (<span className='text-green-500 font-bold'>DE-ANON</span>);
+        if(tokens_only.includes(matchKey)) {
+            const username = tokens[tokens_only.indexOf(matchKey)].split("--")[1];
+            return (<span className='text-green-500 font-bold'>{username}!</span>);
         } else {
-            return matchKey
+            return <p>anonymous user <code className="bg-gray-800 text-red-400 rounded-sm px-1 py-[1px]">{matchKey.slice(0, 5)} ...</code>!</p> ;
         }
     }
 
   return (
-    <div>
-      <h1 className="text-3xl bold">Your Matches</h1>
+    <div className="flex flex-col items-center">
+      <h1 className="text-3xl bold mt-4">Your Matches</h1>
 
       <input
         type="text"
-        className="border-2 p-2 mb-4"
+        className="border-2 p-2 my-4"
         value={userToken || ""}
         onChange={(e) => setUserToken(e.target.value)}
         placeholder="Enter your user token"
@@ -150,12 +154,12 @@ const Results = () => {
                     ></iframe>
                     
                     <div>
-                        <a href={match.recommendedVideo} target="_blank" rel="noopener noreferrer">
+                        <a className="text-blue-400" href={match.recommendedVideo} target="_blank" rel="noopener noreferrer">
                             {match.recommendedVideo}
                         </a>
                         <h4>You've matched with {" "}
                             {getUserIfRevealed(matchKey)}
-                        !</h4>
+                        </h4>
                     </div>
                 </div>
             )

@@ -7,15 +7,19 @@ type Props = {}
 const Reveal = (props: Props) => {
 
     const [tokenState, setTokenState] = useState("")
-    const [submitted, setSubmitted] = useState(false)
+    const [username, setUsername] = useState("")
+    const [submissionStatus, setSubmissionStatus] = useState("NA")
 
     const handleSubmit = async () => {
+
+        setSubmissionStatus("Loading...")
+
         const response = await fetch('/api/reveal', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ token: tokenState }),
+            body: JSON.stringify({ token: tokenState, username: username }),
         })
 
         if (response.ok) {
@@ -24,7 +28,7 @@ const Reveal = (props: Props) => {
             console.error('Failed to append token')
         }
 
-        setSubmitted(true)
+        setSubmissionStatus("Success!")
     }
 
   return (
@@ -45,7 +49,15 @@ const Reveal = (props: Props) => {
                 placeholder="Enter your user token"
             />
 
-            {!submitted ? 
+            <input 
+                type="text" 
+                className='mt-4 p-2 border-gray-400 border-2 rounded-lg w-full'
+                value={username} 
+                onChange={(e) => setUsername(e.target.value)} 
+                placeholder="Enter your name :)"
+            />
+
+            {(submissionStatus === "NA") ? 
                 (
                     <button onClick={handleSubmit} className='mt-4 p-4 border-white border-2 rounded-lg cursor-pointer hover:bg-white hover:text-black transition-all'>
                         De-anonymize!
@@ -53,7 +65,7 @@ const Reveal = (props: Props) => {
                 ) 
                 : 
                 (
-                    <p className='text-green-400 p-4'>Success!</p>
+                    <p className='text-green-400 p-4'>{submissionStatus}</p>
                 )
             }
         </div>
