@@ -20,15 +20,15 @@ export default function UploadForm() {
     const formData = new FormData(form);
 
     // Check file names
-    const watchHistoryFile = formData.get('watch-history-file') as File;
-    const subscriptionsFile = formData.get('subscriptions-file') as File;
+    const watchHistoryFile = formData.get("watch-history-file") as File;
+    const subscriptionsFile = formData.get("subscriptions-file") as File;
 
-    if (watchHistoryFile.name !== 'watch-history.json') {
+    if (watchHistoryFile.name !== "watch-history.json") {
       alert('The watch history file must be named "watch-history.json".');
       return;
     }
 
-    if (subscriptionsFile.name !== 'subscriptions.csv') {
+    if (subscriptionsFile.name !== "subscriptions.csv") {
       alert('The subscriptions file must be named "subscriptions.csv".');
       return;
     }
@@ -37,10 +37,10 @@ export default function UploadForm() {
       setIsLoading(true);
       setError(null);
       setResult(null);
-      
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
       const response = await fetch(`${apiUrl}/api/upload`, {
-        method: 'POST',
+        method: "POST",
         body: formData,
       });
 
@@ -48,7 +48,7 @@ export default function UploadForm() {
         const contentType = response.headers.get("content-type");
         if (contentType && contentType.includes("application/json")) {
           const data = await response.json();
-          setError(data.error || 'Failed to upload files');
+          setError(data.error || "Failed to upload files");
         } else {
           setError(`Server error: ${response.status} ${response.statusText}`);
         }
@@ -58,8 +58,12 @@ export default function UploadForm() {
       const data = await response.json();
       setResult(data);
     } catch (err) {
-      console.error('Upload error:', err);
-      setError(`Failed to upload files. Please try again. Error: ${err instanceof Error ? err.message : String(err)}`);
+      console.error("Upload error:", err);
+      setError(
+        `Failed to upload files. Please try again. Error: ${
+          err instanceof Error ? err.message : String(err)
+        }`
+      );
     } finally {
       setIsLoading(false);
     }
@@ -71,7 +75,7 @@ export default function UploadForm() {
         <div className="space-y-4">
           <div>
             <Text as="label" size="2" weight="bold">
-              Watch History File (must be named "watch-history.json")
+              Watch History File (must be named &quot;watch-history.json&quot;)
             </Text>
             <input
               type="file"
@@ -84,7 +88,7 @@ export default function UploadForm() {
 
           <div>
             <Text as="label" size="2" weight="bold">
-              Subscriptions File (must be named "subscriptions.csv")
+              Subscriptions File (must be named &quot;subscriptions.csv&quot;)
             </Text>
             <input
               type="file"
@@ -102,12 +106,8 @@ export default function UploadForm() {
           </Text>
         )}
 
-        <Button 
-          className="w-fit" 
-          type="submit" 
-          disabled={isLoading}
-        >
-          {isLoading ? 'Uploading...' : 'Submit'}
+        <Button className="w-fit" type="submit" disabled={isLoading}>
+          {isLoading ? "Uploading..." : "Submit"}
         </Button>
       </form>
 
@@ -115,7 +115,10 @@ export default function UploadForm() {
         <div className="mt-6 p-4 border rounded-lg">
           <h3 className="text-lg font-semibold mb-2">Upload Successful!</h3>
           <div className="space-y-2">
-            <p>Your upload ID: <span className="font-mono">{result.uploadId}</span></p>
+            <p>
+              Your upload ID:{" "}
+              <span className="font-mono">{result.uploadId}</span>
+            </p>
             <p>Save this ID to check your results later.</p>
           </div>
         </div>
