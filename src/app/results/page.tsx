@@ -2,9 +2,6 @@
 import { matches } from "@/app/results/matches";
 import React, { useState, useEffect } from "react";
 
-// type Props = {}
-
-
 const Results = () => {
     // const [matches, setMatches] = useState<UserMatches>({});
 

@@ -11,6 +11,9 @@ importers:
       '@radix-ui/themes':
         specifier: ^3.1.6
         version: 3.1.6(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
+      '@types/prop-types':
+        specifier: ^15.7.13
+        version: 15.7.13
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.49)
@@ -20,6 +23,9 @@ importers:
       pnpm:
         specifier: ^9.13.2
         version: 9.13.2
+      prop-types:
+        specifier: ^15.8.1
+        version: 15.8.1
       react:
         specifier: 19.0.0-rc-66855b96-20241106
         version: 19.0.0-rc-66855b96-20241106
@@ -36,12 +42,21 @@ importers:
       '@types/react-dom':
         specifier: ^18
         version: 18.3.1
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^8.14.0
+        version: 8.14.0(@typescript-eslint/parser@8.14.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1)(typescript@5.6.3)
+      '@typescript-eslint/parser':
+        specifier: ^8.14.0
+        version: 8.14.0(eslint@8.57.1)(typescript@5.6.3)
       eslint:
         specifier: ^8
         version: 8.57.1
       eslint-config-next:
         specifier: 15.0.3
         version: 15.0.3(eslint@8.57.1)(typescript@5.6.3)
+      eslint-plugin-react:
+        specifier: ^7.37.2
+        version: 7.37.2(eslint@8.57.1)
       postcss:
         specifier: ^8.4.49
         version: 8.4.49

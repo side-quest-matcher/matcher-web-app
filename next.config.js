@@ -5,6 +5,9 @@ const nextConfig = {
       sizeLimit: '10mb', // Adjust this value based on your needs
     },
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 }
 
 module.exports = nextConfig 

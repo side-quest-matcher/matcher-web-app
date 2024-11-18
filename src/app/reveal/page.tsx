@@ -1,10 +1,8 @@
 "use client"
-import React, { useEffect, useState } from 'react'
-
-type Props = {}
+import React, { useState } from 'react'
 
 
-const Reveal = (props: Props) => {
+const Reveal = () => {
 
     const [tokenState, setTokenState] = useState("")
     const [username, setUsername] = useState("")
