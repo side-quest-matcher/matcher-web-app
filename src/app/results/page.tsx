@@ -1,59 +1,9 @@
 "use client";
+import { matches } from "@/app/results/matches";
 import React, { useState, useEffect } from "react";
 
 // type Props = {}
 
-type Match = {
-  recommendedVideo: string;
-};
-
-type UserMatches = {
-  [userId: string]: {
-    matches: {
-      [matchKey: string]: Match;
-    };
-  };
-};
-
-// Temporary store for matches
-const matches : UserMatches = {
-    "test-user-1": {
-        "matches": {
-            "match-key-1a": {
-                "recommendedVideo": "https://www.youtube.com/watch?v=a0ANLUYyRYI&ab_channel=Stanford"
-            },
-            "test-user-3": {
-                "recommendedVideo": "https://www.youtube.com/watch?v=a0ANLUYyRYI&ab_channel=Stanford"
-            },
-            "test-user-2": {
-                "recommendedVideo": "https://www.youtube.com/watch?v=a0ANLUYyRYI&ab_channel=Stanford"
-            }
-        }
-    },
-    "test-user-2": {
-        "matches": {
-            "test-user-1": {
-                "recommendedVideo": "https://www.youtube.com/watch?v=b5Ho2_Si6hY&ab_channel=GitHub"
-            },
-            "test-user-3": {
-                "recommendedVideo": "https://www.youtube.com/watch?v=b5Ho2_Si6hY&ab_channel=GitHub"
-            },
-            "match-key-2c": {
-                "recommendedVideo": "https://www.youtube.com/watch?v=a0ANLUYyRYI&ab_channel=Stanford"
-            }
-        }
-    },
-    "test-user-3": {
-        "matches": {
-            "match-key-3a": {
-                "recommendedVideo": "https://www.youtube.com/watch?v=b5Ho2_Si6hY&ab_channel=GitHub"
-            },
-            "test-user-2": {
-                "recommendedVideo": "https://www.youtube.com/watch?v=a0ANLUYyRYI&ab_channel=Stanford"
-            }
-        }
-    }
-}
 
 const Results = () => {
     // const [matches, setMatches] = useState<UserMatches>({});
@@ -127,6 +77,13 @@ const Results = () => {
         }
     }
 
+    useEffect(() => {
+        const userToken = localStorage.getItem("userToken");
+        if (userToken) {
+            setUserToken(userToken);
+        }
+    })
+
   return (
     <div className="flex flex-col items-center">
       <h1 className="text-3xl bold mt-4">Your Matches</h1>
@@ -135,7 +92,11 @@ const Results = () => {
         type="text"
         className="border-2 p-2 my-4"
         value={userToken || ""}
-        onChange={(e) => setUserToken(e.target.value)}
+        onChange={(e) => {
+            const userToken = e.target.value;
+            localStorage.setItem("userToken", userToken);
+            setUserToken(userToken)
+        }}
         placeholder="Enter your user token"
       />
 
